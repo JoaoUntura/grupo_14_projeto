@@ -1,0 +1,54 @@
+-- Criação do banco de dados
+CREATE DATABASE IF NOT EXISTS loja;
+USE loja;
+
+-- Tabela: Cliente
+CREATE TABLE Cliente (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    nome VARCHAR(100) NOT NULL,
+    contato VARCHAR(100)
+);
+
+-- Tabela: Pedido
+CREATE TABLE Pedido (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    data DATE NOT NULL,
+    cliente_id INT NOT NULL,
+    total DECIMAL(10,2),
+    forma_pagamento VARCHAR(50),
+    entrega VARCHAR(100),
+    FOREIGN KEY (cliente_id) REFERENCES Cliente(id)
+);
+
+-- Tabela: Produto
+CREATE TABLE Produto (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    nome VARCHAR(100) NOT NULL,
+    preco DECIMAL(10,2) NOT NULL
+);
+
+-- Tabela: pedido_produto (tabela de associação N:N)
+CREATE TABLE pedido_produto (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    pedido_id INT NOT NULL,
+    produto_id INT NOT NULL,
+    quantidade INT NOT NULL,
+    FOREIGN KEY (pedido_id) REFERENCES Pedido(id),
+    FOREIGN KEY (produto_id) REFERENCES Produto(id)
+);
+
+-- Tabela: Role
+CREATE TABLE Role (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    nome VARCHAR(50) NOT NULL
+);
+
+-- Tabela: User
+CREATE TABLE User (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    email VARCHAR(100) NOT NULL UNIQUE,
+    password_hashed VARCHAR(255) NOT NULL,
+    role_id INT,
+    nome VARCHAR(100),
+    FOREIGN KEY (role_id) REFERENCES Role(id)
+);

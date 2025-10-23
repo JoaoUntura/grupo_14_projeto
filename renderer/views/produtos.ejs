@@ -16,13 +16,13 @@
         <h5>Menu:</h5>
         <ul class="nav flex-column">
           <li class="nav-item"><a href="/" class="nav-link">Menu</a></li>
-          <li class="nav-item"><a href="/produtos" class="nav-link">Produtos</a></li>
+          <li class="nav-item"><a href="/produtos" class="nav-link active">Produtos</a></li>
           <li class="nav-item"><a href="/clientes" class="nav-link">Clientes</a></li>
-          <li class="nav-item"><a href="/funcionarios" class="nav-link">Funcionarios</a></li>
-          <li class="nav-item"><a href="#" class="nav-link">Pedidos (Desenvolvendo)</a></li>
-          <li class="nav-item"><a href="#" class="nav-link">Entregas (Desenvolvendo)</a></li>
-          <li class="nav-item"><a href="#" class="nav-link">Graficos (Desenvolvendo)</a></li>
-          <li class="nav-item"><a href="#" class="nav-link">Pagamentos (Desenvolvendo)</a></li>
+          <li class="nav-item"><a href="/funcionarios" class="nav-link">Funcionários</a></li>
+          <li class="nav-item"><a href="#" class="nav-link disabled">Pedidos (Desenvolvendo)</a></li>
+          <li class="nav-item"><a href="#" class="nav-link disabled">Entregas (Desenvolvendo)</a></li>
+          <li class="nav-item"><a href="#" class="nav-link disabled">Gráficos (Desenvolvendo)</a></li>
+          <li class="nav-item"><a href="#" class="nav-link disabled">Pagamentos (Desenvolvendo)</a></li>
         </ul>
       </div>
 
@@ -35,9 +35,9 @@
           </div>
         </div>
 
-         <div class="card shadow p-4">
+        <div class="card shadow p-4 mb-4">
           <h2 class="mb-3">Cadastro de Produtos</h2>
-          <form id="form-produto">
+          <form id="form-produto" method="POST" action="/produtos">
             <div class="mb-3">
               <label for="nomeProduto" class="form-label">Nome do Produto:</label>
               <input type="text" class="form-control" id="nomeProduto" name="nomeProduto" required />
@@ -59,12 +59,40 @@
 
             <div class="d-flex gap-2">
               <button type="submit" class="btn btn-primary">Salvar</button>
-              <button type="button" id="btn-gerenciar-produtos" class="btn btn-success">Gerenciar Produtos</button>
+              <button  class="btn btn-primary">Gerenciar produtos</button>
             </div>
 
             <div id="feedback" class="mt-3"></div>
           </form>
+        </div>
 
+        <!-- 🧾 Lista de Produtos -->
+        <div class="card shadow p-4">
+          <h2 class="mb-3">Lista de Produtos</h2>
+
+          <% if (produtos && produtos.length > 0) { %>
+            <table class="table table-striped">
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Nome</th>
+                  <th>Preço (R$)</th>
+                </tr>
+              </thead>
+              <tbody>
+                <% produtos.forEach(produto => { %>
+                  <tr>
+                    <td><%= produto.id %></td>
+                    <td><%= produto.nome %></td>
+                    <td><%= parseFloat(produto.preco).toFixed(2) %></td>
+                  </tr>
+                <% }) %>
+              </tbody>
+            </table>
+          <% } else { %>
+            <p class="text-muted">Nenhum produto cadastrado ainda.</p>
+          <% } %>
+        </div>
       </div>
     </div>
 

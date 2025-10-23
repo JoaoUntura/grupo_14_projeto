@@ -1,27 +1,28 @@
-/*const express = require('express')
+const express = require('express')
 const router = express.Router()
-const db = require('../db')
 
+const userServices = require('../services/User')
+const authServices = require('../services/Auth')
 
-router.get('/',(req,res) =>{
+router.get('/', async(req,res) =>{
+    await userServices.create("teste@gmail.com", authServices.hashPasswordService("123"), 1, "admin")
     res.render('login')
 })
 
-router.post('/login',(req, res)=>{
-    console.log(req.body)
+router.post('/login',async(req, res)=>{
+
     const {usuario, senha} = req.body
-    db.query(
-        'select * from usuarios where usuario = ? and senha = ?',
-        [usuario,senha],(err, results)=>{
-            if(err) throw err;
-            if(results.length>0){
-                req.session.usuario = usuario
-                res.redirect('/dashboard')
-            } else {
-                res.render('login',{erro: 'Usuário ou Senha inválidos'})
-            }
-    })
+    const response = await userServices.findByEmail(usuario)
+    const user = response.values
+    const validation = authServices.comparePasswordService(senha, user?.password_hashed)
+    if (validation){
+        req.session.usuario = user
+        res.redirect('/home')
+    }else{
+          res.render('login',{erro: 'Usuário ou Senha inválidos'})
+    }
+   
 })
 
 
-module.exports = router*/
+module.exports = router

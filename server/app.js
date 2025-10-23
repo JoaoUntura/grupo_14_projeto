@@ -16,13 +16,15 @@ app.use(session({
     saveUninitialized: false,
 }))
 
+const loginRouter = require('./routers/auth')
 const homeRouter = require('./routers/home')
 const clientes = require('./routers/clientes')
 const funcionarios = require('./routers/funcionarios')
 const produtos = require('./routers/produtos')
 
 
-app.use('/', homeRouter)
+app.use('/', loginRouter)
+app.use('/home', homeRouter)
 app.use('/clientes', clientes)
 app.use('/produtos', produtos)
 app.use('/funcionarios', funcionarios)

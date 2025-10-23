@@ -17,14 +17,15 @@
         <ul class="nav flex-column">
           <li class="nav-item"><a href="/" class="nav-link">Menu</a></li>
           <li class="nav-item"><a href="/produtos" class="nav-link">Produtos</a></li>
-          <li class="nav-item"><a href="/clientes" class="nav-link">Clientes</a></li>
-          <li class="nav-item"><a href="/funcionarios" class="nav-link">Funcionarios</a></li>
-          <li class="nav-item"><a href="#" class="nav-link">Pedidos (Desenvolvendo)</a></li>
-          <li class="nav-item"><a href="#" class="nav-link">Entregas (Desenvolvendo)</a></li>
-          <li class="nav-item"><a href="#" class="nav-link">Graficos (Desenvolvendo)</a></li>
-          <li class="nav-item"><a href="#" class="nav-link">Pagamentos (Desenvolvendo)</a></li>
+          <li class="nav-item"><a href="/clientes" class="nav-link active">Clientes</a></li>
+          <li class="nav-item"><a href="/funcionarios" class="nav-link">Funcionários</a></li>
+          <li class="nav-item"><a href="#" class="nav-link disabled">Pedidos (Desenvolvendo)</a></li>
+          <li class="nav-item"><a href="#" class="nav-link disabled">Entregas (Desenvolvendo)</a></li>
+          <li class="nav-item"><a href="#" class="nav-link disabled">Gráficos (Desenvolvendo)</a></li>
+          <li class="nav-item"><a href="#" class="nav-link disabled">Pagamentos (Desenvolvendo)</a></li>
         </ul>
       </div>
+
       <!-- Conteúdo principal -->
       <div class="container-fluid p-4">
         <!-- Topbar -->
@@ -34,9 +35,9 @@
         </div>
 
         <!-- Formulário de clientes -->
-        <div class="card shadow p-4">
+        <div class="card shadow p-4 mb-4">
           <h2 class="mb-3">Cadastro de Clientes</h2>
-          <form id="form-cliente">
+          <form id="form-cliente" method="POST" action="/clientes">
             <div class="mb-3">
               <label for="nome" class="form-label">Nome:</label>
               <input type="text" class="form-control" id="nome" name="nome" required />
@@ -63,8 +64,33 @@
           </form>
         </div>
 
-        <!-- Área onde a lista pode aparecer -->
-        <div id="lista-clientes" class="mt-4"></div>
+        <!-- 📋 Lista de Clientes -->
+        <div class="card shadow p-4">
+          <h2 class="mb-3">Lista de Clientes</h2>
+
+          <% if (clientes && clientes.length > 0) { %>
+            <table class="table table-striped align-middle">
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Nome</th>
+                  <th>Contato</th>
+                </tr>
+              </thead>
+              <tbody>
+                <% clientes.forEach(cliente => { %>
+                  <tr>
+                    <td><%= cliente.id %></td>
+                    <td><%= cliente.nome %></td>
+                    <td><%= cliente.contato %></td>
+                  </tr>
+                <% }) %>
+              </tbody>
+            </table>
+          <% } else { %>
+            <p class="text-muted">Nenhum cliente cadastrado ainda.</p>
+          <% } %>
+        </div>
       </div>
     </div>
 
