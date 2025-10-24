@@ -1,19 +1,52 @@
-import db from "../config/database.js";
-import csv from "csv-parser";
-import fs from "fs";
+const db = require("../db")
 
 class Pedido {
-  async findAll() {
-    try {
-      const pedidos = await db
-        .select("Pedido.id", "Pedido.data", "Pedido.cliente_id", "Pedido.total", "Pedido.forma_pagamento", "Pedido.entregue", "Cliente.nome")
-        .innerJoin('Cliente', 'Pedido.cliente_id', '=', 'Cliente.id')
-        .table("Pedido");
-      return { validated: true, values: pedidos };
-    } catch (error) {
-      return { validated: false, error: error };
+ async findAll() {
+  try {
+    const pedidosRaw = await db("Pedido")
+      .select(
+        "Pedido.id",
+        "Pedido.data",
+        "Pedido.cliente_id",
+        "Pedido.total",
+        "Pedido.forma_pagamento",
+        "Pedido.entrega",
+        "Cliente.nome as cliente_nome",
+        "Produto.nome as produto_nome"
+      )
+      .innerJoin("Cliente", "Pedido.cliente_id", "Cliente.id")
+      .innerJoin("pedido_produto", "Pedido.id", "pedido_produto.pedido_id")
+      .innerJoin("Produto", "pedido_produto.produto_id", "Produto.id");
+
+    // Agrupa os produtos por pedido
+    const pedidosMap = {};
+
+    for (const p of pedidosRaw) {
+      if (!pedidosMap[p.id]) {
+        pedidosMap[p.id] = {
+          id: p.id,
+          data: p.data,
+          cliente_id: p.cliente_id,
+          total: p.total,
+          forma_pagamento: p.forma_pagamento,
+          entrega: p.entrega,
+          cliente_nome: p.cliente_nome,
+          produtos: []
+        };
+      }
+      pedidosMap[p.id].produtos.push(p.produto_nome);
     }
+
+    const pedidos = Object.values(pedidosMap);
+
+    return { validated: true, values: pedidos };
+  } catch (error) {
+    console.error(error);
+    return { validated: false, error };
   }
+}
+
+
 
   async findById(id) {
     try {
@@ -29,7 +62,7 @@ class Pedido {
     }
   }
 
-  async create(data, cliente_id, total, forma_pagamento, entregue) {
+  async create(data, cliente_id, total, forma_pagamento, entrega) {
     try {
       const pedido = await db
         .insert({
@@ -37,7 +70,7 @@ class Pedido {
           cliente_id: cliente_id,
           total: total,
           forma_pagamento: forma_pagamento,
-          entregue:entregue
+          entrega:entrega
         })
         .returning('id')
         .table("Pedido");
@@ -47,7 +80,7 @@ class Pedido {
     }
   }
 
-  async update(id, data, cliente_id, total, forma_pagamento, entregue) {
+  async update(id, data, cliente_id, total, forma_pagamento, entrega) {
     let pedido = await this.findById(id);
 
     if (pedido.validated && pedido.values != undefined) {
@@ -56,7 +89,7 @@ class Pedido {
       cliente_id ? (editPedido.cliente_id = cliente_id) : null;
       total ? (editPedido.total = total) : null;
       forma_pagamento ? (editPedido.forma_pagamento = forma_pagamento) : null;
-      entregue ? (editPedido.entregue = entregue) : null;
+      entrega ? (editPedido.entrega = entrega) : null;
 
       try {
         await db.update(editPedido).where("id", id).table("Pedido");
@@ -118,4 +151,5 @@ class Pedido {
   }
 }
 
-export default new Pedido();
+
+module.exports = new Pedido();

@@ -1,4 +1,4 @@
-import db from "../config/database.js";
+const db = require("../db")
 
  class PedidoProduto{
 
@@ -84,4 +84,4 @@ import db from "../config/database.js";
 
 }
 
-export default new PedidoProduto()
+module.exports =  new PedidoProduto()
