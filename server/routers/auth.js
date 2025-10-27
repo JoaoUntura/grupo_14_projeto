@@ -3,9 +3,11 @@ const router = express.Router()
 
 const userServices = require('../services/User')
 const authServices = require('../services/Auth')
+const abacate = require('../services/AbacatePay')
 
 router.get('/', async(req,res) =>{
-    await userServices.create("teste@gmail.com", authServices.hashPasswordService("123"), 1, "admin")
+  
+   
     res.render('login')
 })
 

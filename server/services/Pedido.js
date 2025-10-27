@@ -7,14 +7,20 @@ class Pedido {
       .select(
         "Pedido.id",
         "Pedido.data",
-        "Pedido.cliente_id",
-        "Pedido.total",
-        "Pedido.forma_pagamento",
+        "Pedido.externalId as pedido_external_id",
         "Pedido.entrega",
         "Cliente.nome as cliente_nome",
-        "Produto.nome as produto_nome"
+        "Cliente.contato as cliente_contato",
+        "Cliente.email as cliente_email",
+        "Cliente.cpf as cliente_cpf",
+        "Produto.nome as produto_nome",
+        "Pagamento.externalId as pagamento_external_id",
+        "Pagamento.status as status ",
+        "Pagamento.totalCentavos as total",
+        "Pagamento.metodo as metodo" 
       )
       .innerJoin("Cliente", "Pedido.cliente_id", "Cliente.id")
+      .innerJoin("Pagamento", "Pedido.pagamento_id", "Pagamento.id")
       .innerJoin("pedido_produto", "Pedido.id", "pedido_produto.pedido_id")
       .innerJoin("Produto", "pedido_produto.produto_id", "Produto.id");
 
@@ -25,12 +31,17 @@ class Pedido {
       if (!pedidosMap[p.id]) {
         pedidosMap[p.id] = {
           id: p.id,
+          pedido_external_id: p.pedido_external_id,
+          pagamento_external_id: p.pagamento_external_id,
           data: p.data,
-          cliente_id: p.cliente_id,
           total: p.total,
-          forma_pagamento: p.forma_pagamento,
+          metodo: p.metodo,
           entrega: p.entrega,
           cliente_nome: p.cliente_nome,
+          cliente_contato: p.cliente_contato,
+          cliente_email: p.cliente_email,
+          cliente_cpf: p.cliente_cpf,
+          status: p.status,
           produtos: []
         };
       }
@@ -62,19 +73,19 @@ class Pedido {
     }
   }
 
-  async create(data, cliente_id, total, forma_pagamento, entrega) {
+  async create(data, externalId, cliente_id, pagamento_id, entrega) {
     try {
-      const pedido = await db
+      const [id]  = await db
         .insert({
           data: data,
+          externalId:externalId,
           cliente_id: cliente_id,
-          total: total,
-          forma_pagamento: forma_pagamento,
+          pagamento_id:pagamento_id,
           entrega:entrega
         })
-        .returning('id')
+   
         .table("Pedido");
-      return { validated: true, values:pedido };
+      return { validated: true, values:id };
     } catch (error) {
       return { validated: false, error: error };
     }
@@ -121,34 +132,7 @@ class Pedido {
 
 }
 
-  async insertViaCsv(file) {
-    const formatDate = (dateStr) => {
-      const [day, month, year] = dateStr.split("/");
-      return `${year}-${month}-${day}`;
-    };
-    const results = [];
-    try {
-      fs.createReadStream(file)
-        .pipe(csv())
-        .on("data", (data) => {
-          const newData = {
-            data: formatDate(data.data),
-            cliente_id: parseInt(data.cliente_id),
-            total: parseFloat(data.total),
-            forma_pagamento: data?.forma_pagamento || "Não Informado",
-          };
-          results.push(newData);
-        })
-        .on("end", async () => {
-          await db("Pedido").insert(results);
-          fs.unlinkSync(file);
-        });
-
-      return { validated: true, values: results };
-    } catch (err) {
-      return { validated: false, err: err.message };
-    }
-  }
+  
 }
 
 

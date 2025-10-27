@@ -12,19 +12,7 @@
   <body>
     <div class="d-flex">
       <!-- Sidebar -->
-      <div class="sidebar p-3 text-white">
-        <h5>Menu:</h5>
-        <ul class="nav flex-column">
-          <li class="nav-item"><a href="/" class="nav-link">Menu</a></li>
-          <li class="nav-item"><a href="/produtos" class="nav-link">Produtos</a></li>
-          <li class="nav-item"><a href="/clientes" class="nav-link">Clientes</a></li>
-          <li class="nav-item"><a href="/funcionarios" class="nav-link">Funcionários</a></li>
-          <li class="nav-item"><a href="/pedidos" class="nav-link active">Pedidos</a></li>
-          <li class="nav-item"><a href="#" class="nav-link disabled">Entregas (Desenvolvendo)</a></li>
-          <li class="nav-item"><a href="#" class="nav-link disabled">Gráficos (Desenvolvendo)</a></li>
-          <li class="nav-item"><a href="#" class="nav-link disabled">Pagamentos (Desenvolvendo)</a></li>
-        </ul>
-      </div>
+      <%- include('partials/sidebar') %>
 
       <!-- Conteúdo principal -->
       <div class="container-fluid p-4">
@@ -119,43 +107,7 @@
           </form>
         </div>
 
-        <!-- 📋 Lista de Pedidos -->
-        <div class="card shadow p-4">
-          <h2 class="mb-3">Lista de Pedidos</h2>
-
-          <% if (pedidos && pedidos.length > 0) { %>
-            <table class="table table-striped">
-              <thead>
-                <tr>
-                  <th>ID</th>
-                  <th>Cliente</th>
-                  <th>Data</th>
-                  <th>Produtos</th>
-                  <th>Total (R$)</th>
-                  <th>Entregue</th>
-                </tr>
-              </thead>
-              <tbody>
-                <% pedidos.forEach(pedido => { %>
-                  <tr>
-                    <td><%= pedido.id %></td>
-                    <td><%= pedido.nome %></td>
-                    <td><%= pedido.data %></td>
-                    <td>
-                      <% pedido.produtos.forEach((p, i) => { %>
-                        <%= p %> <%= i < pedido.produtos.length - 1 ? ', ' : '' %>
-                      <% }) %>
-                    </td>
-                    <td><%= parseFloat(pedido.total).toFixed(2) %></td>
-                    <td><%= pedido.entregue ? 'Sim' : 'Não' %></td>
-                  </tr>
-                <% }) %>
-              </tbody>
-            </table>
-          <% } else { %>
-            <p class="text-muted">Nenhum pedido cadastrado ainda.</p>
-          <% } %>
-        </div>
+       
       </div>
     </div>
 

@@ -1,24 +1,31 @@
-const express = require('express')
-const router = express.Router()
-const produtosServices = require("../services/Produtos")
-const clientesServices = require("../services/Cliente")
-const pedidosServices = require("../services/Pedido")
-const pedidoProdutoServices = require("../services/PedidoProduto")
+const express = require("express");
+const router = express.Router();
+const produtosServices = require("../services/Produtos");
+const clientesServices = require("../services/Cliente");
+const pedidosServices = require("../services/Pedido");
+const pedidoProdutoServices = require("../services/PedidoProduto");
+const pagamentoSevices = require("../services/Pagamentos");
+const crypto = require("crypto");
 
-router.get('/', async(req,res) =>{
-    const responseProdutos = await produtosServices.findAll()
-    const produtos = responseProdutos?.values || []
+router.get("/", async (req, res) => {
+  const pedido = await pedidosServices.findAll()
 
-    const responsePedidos = await pedidosServices.findAll()
-    const pedidos = responsePedidos?.values || []
-    console.log(pedidos)
-    const responseClientes = await clientesServices.findAll()
-    const clientes = responseClientes?.values || []
+  const pedidos =  pedido.values
+  console.log(pedidos)
+  const responseProdutos = await produtosServices.findAll();
+  const produtos = responseProdutos?.values || [];
 
 
+  const responseClientes = await clientesServices.findAll();
+  const clientes = responseClientes?.values || [];
 
-    res.render('pedidos', {produtos:produtos, clientes:clientes, pedidos:pedidos})
-})
+
+  res.render("pedidos", {
+    produtos: produtos,
+    clientes: clientes,
+
+  });
+});
 
 router.post("/", async (req, res) => {
   try {
@@ -31,18 +38,26 @@ router.post("/", async (req, res) => {
       ...quantidadesRaw
     } = req.body;
 
+    const totalPedido = parseFloat(total) * 100;
 
-    const cliente_id = parseInt(clienteId);
-    const totalPedido = parseFloat(total);
+    const forma_pagamento = "Nao Informado";
+
+    const externalIdPagamento = crypto.randomUUID();
+    const pagamentoId = await pagamentoSevices.createAndReturnId(
+      externalIdPagamento,
+      forma_pagamento,
+      "Pendente",
+      totalPedido
+    );
+
     const entregueBool = entregue === "true";
     const data = dataPedido;
-    const forma_pagamento = "Não informado"; // pode ser ajustado depois
-
+    const cliente_id = parseInt(clienteId);
     const pedidoResult = await pedidosServices.create(
       data,
+      crypto.randomUUID(),
       cliente_id,
-      totalPedido,
-      forma_pagamento,
+      pagamentoId.values,
       entregueBool
     );
 
@@ -50,9 +65,8 @@ router.post("/", async (req, res) => {
       return res.status(500).json({ error: pedidoResult.error });
     }
 
-    const pedidoId = pedidoResult.values // ID retornado pelo insert
+    const pedidoId = pedidoResult.values; // ID retornado pelo insert
 
-   
     if (produtos && Array.isArray(produtos)) {
       for (const produtoId of produtos) {
         const key = `quantidades[${produtoId}]`;
@@ -69,13 +83,10 @@ router.post("/", async (req, res) => {
         }
       }
     }
-
-   
-
   } catch (error) {
     console.error("Erro ao cadastrar pedido:", error);
     res.status(500).json({ error: "Erro interno no servidor" });
   }
 });
 
-module.exports = router
+module.exports = router;

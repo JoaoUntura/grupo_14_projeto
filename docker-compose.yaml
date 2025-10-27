@@ -1,0 +1,18 @@
+
+services:
+  database_msql:
+    image: mysql
+    container_name: mysql
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: sabor
+      MYSQL_USER: user
+      MYSQL_PASSWORD: unifeob@123
+    ports:
+        - "3306:3306"
+    volumes:
+        - sabor_data:/var/lib/mysql
+ 
+volumes:
+  sabor_data:

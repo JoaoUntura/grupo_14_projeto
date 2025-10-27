@@ -11,8 +11,8 @@ router.get('/', async(req,res) =>{
 })
 
 router.post('/', async(req,res) =>{
-  const {nome, telefone} = req.body
-  const response = await clienteServices.create(nome, telefone)
+  const {nome, telefone, email, cpf} = req.body
+  const response = await clienteServices.create(nome, telefone, email, cpf)
   console.log(response)
 
 })

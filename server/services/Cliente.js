@@ -27,9 +27,9 @@ const db = require("../db")
         }
     }
 
-    async create(nome, contato){
+    async create(nome, contato, email, cpf){
         try{
-            await db.insert({nome:nome, contato:contato}).table("Cliente")
+            await db.insert({nome:nome, contato:contato, email:email, cpf:cpf}).table("Cliente")
             return {validated:true}
         }catch(error){
             return {validated: false, error: error}

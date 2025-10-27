@@ -6,18 +6,32 @@ USE loja;
 CREATE TABLE Cliente (
     id INT AUTO_INCREMENT PRIMARY KEY,
     nome VARCHAR(100) NOT NULL,
-    contato VARCHAR(100)
+    contato VARCHAR(100),
+    email VARCHAR(100),
+    cpf VARCHAR(100)
+);
+
+-- Tabela: Pagamento (precisa existir antes de Pedido por causa da FK)
+CREATE TABLE Pagamento (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    externalId CHAR(36) UNIQUE NOT NULL, -- UUID é armazenado como string
+    data_criacao DATE NOT NULL,
+    data_pagamento DATE,
+    metodo VARCHAR(50),
+    status VARCHAR(50),
+    totalCentavos INT
 );
 
 -- Tabela: Pedido
 CREATE TABLE Pedido (
     id INT AUTO_INCREMENT PRIMARY KEY,
+    externalId CHAR(36) UNIQUE NOT NULL,
     data DATE NOT NULL,
     cliente_id INT NOT NULL,
-    total DECIMAL(10,2),
-    forma_pagamento VARCHAR(50),
-    entrega VARCHAR(100),
-    FOREIGN KEY (cliente_id) REFERENCES Cliente(id)
+    pagamento_id INT NOT NULL,
+    entrega BOOLEAN,
+    FOREIGN KEY (cliente_id) REFERENCES Cliente(id),
+    FOREIGN KEY (pagamento_id) REFERENCES Pagamento(id)
 );
 
 -- Tabela: Produto
@@ -27,7 +41,7 @@ CREATE TABLE Produto (
     preco DECIMAL(10,2) NOT NULL
 );
 
--- Tabela: pedido_produto (tabela de associação N:N)
+-- Tabela: pedido_produto (associação N:N)
 CREATE TABLE pedido_produto (
     id INT AUTO_INCREMENT PRIMARY KEY,
     pedido_id INT NOT NULL,
