@@ -3,15 +3,7 @@ const db = require("../db");
 class Pagamentos {
   async findAll() {
     try {
-      const pagamentos = await db("Pagamento").select(
-        "id",
-        "externalId",
-        "data_criacao",
-        "data_pagamento",
-        "metodo",
-        "status",
-        "totalCentavos"
-      );
+      const pagamentos = await db("Pagamento").select();
 
       return { validated: true, values: pagamentos };
     } catch (error) {
@@ -53,7 +45,6 @@ class Pagamentos {
           status,
           totalCentavos,
         })
-        .returning("id")
         .table("Pagamento");
     
       return { validated: true, values: id };
@@ -62,11 +53,12 @@ class Pagamentos {
     }
   }
 
-  async update(id, data_criacao, data_pagamento, metodo, status, totalCentavos) {
-    const pagamento = await this.findById(id);
+  async update(externalId, codigoPix,qrCode,idQrCodePayment, status, metodo, data_criacao, data_pagamento,   totalCentavos, ) {
 
-    if (pagamento.validated && pagamento.values !== undefined) {
       const editPagamento = {};
+      codigoPix ? (editPagamento.codigoPix = codigoPix) : null;
+      qrCode ?(editPagamento.qrCode = qrCode) : null;
+      idQrCodePayment ? (editPagamento.idQrCodePayment = idQrCodePayment) : null;
       data_criacao ? (editPagamento.data_criacao = data_criacao) : null;
       data_pagamento ? (editPagamento.data_pagamento = data_pagamento) : null;
       metodo ? (editPagamento.metodo = metodo) : null;
@@ -74,14 +66,12 @@ class Pagamentos {
       totalCentavos ? (editPagamento.totalCentavos = totalCentavos) : null;
 
       try {
-        await db.update(editPagamento).where("id", id).table("Pagamento");
+        await db.update(editPagamento).where("externalId", externalId).table("Pagamento");
         return { validated: true };
       } catch (error) {
         return { validated: false, error };
       }
-    } else {
-      return { validated: false, error: "Pagamento não existente" };
-    }
+   
   }
 
   async delete(id) {

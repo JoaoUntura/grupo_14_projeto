@@ -11,29 +11,9 @@
   </head>
   <body>
     <div class="d-flex">
-      <!-- Sidebar -->
-      <div class="sidebar p-3 text-white">
-        <h5>Menu:</h5>
-        <ul class="nav flex-column">
-          <li class="nav-item"><a href="/" class="nav-link">Menu</a></li>
-          <li class="nav-item"><a href="/produtos" class="nav-link active">Produtos</a></li>
-          <li class="nav-item"><a href="/clientes" class="nav-link">Clientes</a></li>
-          <li class="nav-item"><a href="/funcionarios" class="nav-link">Funcionários</a></li>
-          <li class="nav-item"><a href="#" class="nav-link disabled">Pedidos (Desenvolvendo)</a></li>
-          <li class="nav-item"><a href="#" class="nav-link disabled">Entregas (Desenvolvendo)</a></li>
-          <li class="nav-item"><a href="#" class="nav-link disabled">Gráficos (Desenvolvendo)</a></li>
-          <li class="nav-item"><a href="#" class="nav-link disabled">Pagamentos (Desenvolvendo)</a></li>
-        </ul>
-      </div>
+      <%- include('partials/sidebar') %>
+      <%- include('partials/logout') %>
 
-      <!-- Conteúdo principal -->
-      <div class="container-fluid p-4">
-        <div class="d-flex justify-content-between align-items-center mb-3">
-          <h3 class="brand">Sabor do Campo</h3>
-          <div>
-            <button class="btn btn-secondary">Logout</button>
-          </div>
-        </div>
 
         <div class="card shadow p-4 mb-4">
           <h2 class="mb-3">Cadastro de Produtos</h2>

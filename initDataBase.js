@@ -26,7 +26,7 @@ async function createDatabaseAndTables() {
         email VARCHAR(100),
         cpf VARCHAR(100)
       );
-
+  
       CREATE TABLE IF NOT EXISTS Pagamento (
         id INT AUTO_INCREMENT PRIMARY KEY,
         externalId CHAR(36) UNIQUE NOT NULL,
@@ -34,8 +34,13 @@ async function createDatabaseAndTables() {
         data_pagamento DATE,
         metodo VARCHAR(50),
         status VARCHAR(50),
+        codigoPix TEXT,
+        qrCode TEXT,
+        idQrCodePayment TEXT,
         totalCentavos INT
       );
+
+
 
       CREATE TABLE IF NOT EXISTS Pedido (
         id INT AUTO_INCREMENT PRIMARY KEY,
@@ -45,7 +50,7 @@ async function createDatabaseAndTables() {
         pagamento_id INT NOT NULL,
         entrega BOOLEAN,
         FOREIGN KEY (cliente_id) REFERENCES Cliente(id),
-        FOREIGN KEY (pagamento_id) REFERENCES Pagamento(id)
+        FOREIGN KEY (pagamento_id) REFERENCES Pagamento(id) ON DELETE CASCADE
       );
 
       CREATE TABLE IF NOT EXISTS Produto (

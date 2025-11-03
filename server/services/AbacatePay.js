@@ -41,7 +41,7 @@ class AbacatePayServices {
       const response = await fetch(url, options);
       const data = await response.json();
 
-      return { codigo: data.data.brCode, qrCode: data.data.brCodeBase64 };
+      return { codigo: data?.data?.brCode, qrCode: data?.data?.brCodeBase64, id:data?.data?.id };
     } catch (error) {
       console.log(error);
     }
@@ -103,6 +103,40 @@ class AbacatePayServices {
       
     }
   }
+
+  async buscarPagamento(id){
+    const url = `https://api.abacatepay.com/v1/pixQrCode/check?id=${id}`
+  const options = {method: 'GET', headers: {Authorization: 'Bearer abc_dev_rdErJsPLYdzxNhxPyfJss2jk'}, body: undefined};
+
+try {
+  const response = await fetch(url, options);
+  const data = await response.json();
+  console.log(data);
+  return data
+} catch (error) {
+  console.error(error);
+}
+  }
+
+
+  async simularPagamento(id){
+    const url = `https://api.abacatepay.com/v1/pixQrCode/simulate-payment?id=${id}`;
+const options = {
+  method: 'POST',
+  headers: {Authorization: 'Bearer abc_dev_rdErJsPLYdzxNhxPyfJss2jk', 'Content-Type': 'application/json'},
+  body: '{"metadata":{}}'
+};
+
+try {
+  const response = await fetch(url, options);
+  const data = await response.json();
+  console.log(data);
+} catch (error) {
+  console.error(error);
+}
+  }
+    
+  
 }
 
 module.exports = new AbacatePayServices();

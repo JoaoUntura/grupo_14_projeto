@@ -4,43 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Suporte - Sabor do Campo</title>
-    <style>
-        body { font-family: Arial, sans-serif; display: flex; }
-        .sidebar { width: 200px; background-color: #f4f4f4; padding: 20px; }
-        .sidebar ul { list-style: none; padding: 0; }
-        .sidebar ul li { margin: 10px 0; }
-        .sidebar ul li a { text-decoration: none; color: #333; }
-        .content { flex-grow: 1; padding: 20px; }
-        .header { display: flex; justify-content: space-between; align-items: center; }
-        ul { margin-top: 20px; }
-        ul li { margin-bottom: 10px; }
-    </style>
 </head>
 <body>
-    <div class="sidebar">
-        <h3>Menu:</h3>
-        <ul>
-            <li><a href="/home">Menu</a></li>
-            <li><a href="/produtos">Produtos</a></li>
-            <li><a href="/clientes">Clientes</a></li>
-            <li><a href="/funcionarios">Funcionarios</a></li>
-            <li><a href="#">Pedidos (Desenvolvendo)</a></li>
-            <li><a href="#">Entregas (Desenvolvendo)</a></li>
-            <li><a href="#">Graficos (Desenvolvendo)</a></li>
-            <li><a href="#">Pagamentos (Desenvolvendo)</a></li>
-            <li><a href="/perfil">Meu Perfil</a></li>
-            <li><a href="/suporte">Suporte</a></li>
-        </ul>
-    </div>
 
-    <div class="content">
-        <div class="header">
-            <h1>Sabor do Campo</h1>
-            <div>
-                <a href="/perfil">Meu Perfil</a>
-                <a href="/logout">Logout</a>
-            </div>
-        </div>
+    <%- include('partials/sidebar') %>
+    <%- include('partials/logout') %>
 
         <h2>Suporte</h2>
         <div>

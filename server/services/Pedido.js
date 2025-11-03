@@ -17,7 +17,10 @@ class Pedido {
         "Pagamento.externalId as pagamento_external_id",
         "Pagamento.status as status ",
         "Pagamento.totalCentavos as total",
-        "Pagamento.metodo as metodo" 
+        "Pagamento.metodo as metodo",
+        "Pagamento.codigoPix as codigoPix",
+        "Pagamento.qrCode as qrCode",
+        "Pagamento.idQrCodePayment as idPix",
       )
       .innerJoin("Cliente", "Pedido.cliente_id", "Cliente.id")
       .innerJoin("Pagamento", "Pedido.pagamento_id", "Pagamento.id")
@@ -42,6 +45,9 @@ class Pedido {
           cliente_email: p.cliente_email,
           cliente_cpf: p.cliente_cpf,
           status: p.status,
+          codigoPix:p.codigoPix,
+          qrCode:p.qrCode,
+          idPix:p.idPix,
           produtos: []
         };
       }
@@ -49,6 +55,7 @@ class Pedido {
     }
 
     const pedidos = Object.values(pedidosMap);
+    console.log(pedidos)
 
     return { validated: true, values: pedidos };
   } catch (error) {
