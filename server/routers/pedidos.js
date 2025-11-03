@@ -8,10 +8,7 @@ const pagamentoSevices = require("../services/Pagamentos");
 const crypto = require("crypto");
 
 router.get("/", async (req, res) => {
-  const pedido = await pedidosServices.findAll()
 
-  const pedidos =  pedido.values
-  console.log(pedidos)
   const responseProdutos = await produtosServices.findAll();
   const produtos = responseProdutos?.values || [];
 
@@ -61,9 +58,7 @@ router.post("/", async (req, res) => {
       entregueBool
     );
 
-    if (!pedidoResult.validated) {
-      return res.status(500).json({ error: pedidoResult.error });
-    }
+    if (!pedidoResult.validated) throw new Error(pedidoResult.error)
 
     const pedidoId = pedidoResult.values; // ID retornado pelo insert
 
@@ -79,12 +74,13 @@ router.post("/", async (req, res) => {
         );
 
         if (!pedidoProduto.validated) {
-          console.error("Erro ao cadastrar produto:", pedidoProduto.error);
+          throw new Error(pedidoResult.error)
         }
       }
     }
+    res.redirect("/pedidos_lista")
   } catch (error) {
-    console.error("Erro ao cadastrar pedido:", error);
+    console.log("Erro ao cadastrar pedido:", error);
     res.status(500).json({ error: "Erro interno no servidor" });
   }
 });

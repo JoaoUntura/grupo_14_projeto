@@ -9,7 +9,7 @@ router.get("/", async (req, res) => {
   const lojaInfo = await gatewayServices.getStoreInfo()
 const saques = await gatewayServices.listarSaques()
 
-    console.log("lojaInfo", lojaInfo, "saques", saques)
+ 
 
   res.render("carteira", {
     lojaInfo: lojaInfo,
@@ -19,9 +19,10 @@ const saques = await gatewayServices.listarSaques()
 
 router.post("/", async (req, res) => {
     const {amount} = req.body
+   
     const response = await gatewayServices.novoSaque(amount)
+ 
     console.log(response)
-
   });
 
 
