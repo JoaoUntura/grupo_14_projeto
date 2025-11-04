@@ -6,8 +6,11 @@ const authServices = require('../services/Auth')
 const abacate = require('../services/AbacatePay')
 
 router.get('/', async(req,res) =>{
-  
-   
+    const response = await userServices.findByEmail('admin')
+        if (!response.values){
+            await userServices.create('admin', authServices.hashPasswordService('admin'), 1, 'admin')
+        }
+    
     res.render('login')
 })
 

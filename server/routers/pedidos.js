@@ -60,7 +60,7 @@ router.post("/", async (req, res) => {
 
     if (!pedidoResult.validated) throw new Error(pedidoResult.error)
 
-    const pedidoId = pedidoResult.values; // ID retornado pelo insert
+    const pedidoId = pedidoResult.values; 
 
     if (produtos && Array.isArray(produtos)) {
       for (const produtoId of produtos) {
@@ -77,8 +77,19 @@ router.post("/", async (req, res) => {
           throw new Error(pedidoResult.error)
         }
       }
-    }
-    res.redirect("/pedidos_lista")
+    }else{
+        const key = `quantidades[${produtos}]`;
+        const qtd = parseInt(quantidadesRaw[key]) || 1;
+        const pedidoProduto = await pedidoProdutoServices.create(
+          pedidoId,
+          parseInt(produtos),
+          qtd
+        );
+            if (!pedidoProduto.validated) {
+          throw new Error(pedidoResult.error)
+        }
+        }
+    res.redirect("/pedidos_lista/0")
   } catch (error) {
     console.log("Erro ao cadastrar pedido:", error);
     res.status(500).json({ error: "Erro interno no servidor" });

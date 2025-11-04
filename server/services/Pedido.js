@@ -1,7 +1,9 @@
 const db = require("../db")
 
 class Pedido {
- async findAll() {
+ async findAll(cliente) {
+
+
   try {
     const pedidosRaw = await db("Pedido")
       .select(
@@ -22,14 +24,15 @@ class Pedido {
         "Pagamento.qrCode as qrCode",
         "Pagamento.idQrCodePayment as idPix",
       )
-      .innerJoin("Cliente", "Pedido.cliente_id", "Cliente.id")
-      .innerJoin("Pagamento", "Pedido.pagamento_id", "Pagamento.id")
-      .innerJoin("pedido_produto", "Pedido.id", "pedido_produto.pedido_id")
-      .innerJoin("Produto", "pedido_produto.produto_id", "Produto.id");
-
+      .leftJoin("Cliente", "Pedido.cliente_id", "Cliente.id")
+      .leftJoin("Pagamento", "Pedido.pagamento_id", "Pagamento.id")
+      .leftJoin("pedido_produto", "Pedido.id", "pedido_produto.pedido_id")
+      .leftJoin("Produto", "pedido_produto.produto_id", "Produto.id")
+  
+      
     // Agrupa os produtos por pedido
     const pedidosMap = {};
-
+     
     for (const p of pedidosRaw) {
       if (!pedidosMap[p.id]) {
         pedidosMap[p.id] = {
@@ -55,7 +58,7 @@ class Pedido {
     }
 
     const pedidos = Object.values(pedidosMap);
-    console.log(pedidos)
+    
 
     return { validated: true, values: pedidos };
   } catch (error) {
@@ -137,6 +140,71 @@ class Pedido {
         return {validated:false, error: "Pedido não existente"} 
     }
 
+}
+
+async findByClientId(clienteId){
+  try {
+    const pedidosRaw = await db("Pedido")
+      .select(
+        "Pedido.id",
+        "Pedido.data",
+        "Pedido.externalId as pedido_external_id",
+        "Pedido.entrega",
+        "Cliente.nome as cliente_nome",
+        "Cliente.contato as cliente_contato",
+        "Cliente.email as cliente_email",
+        "Cliente.cpf as cliente_cpf",
+        "Produto.nome as produto_nome",
+        "Pagamento.externalId as pagamento_external_id",
+        "Pagamento.status as status ",
+        "Pagamento.totalCentavos as total",
+        "Pagamento.metodo as metodo",
+        "Pagamento.codigoPix as codigoPix",
+        "Pagamento.qrCode as qrCode",
+        "Pagamento.idQrCodePayment as idPix",
+      )
+      .leftJoin("Cliente", "Pedido.cliente_id", "Cliente.id")
+      .leftJoin("Pagamento", "Pedido.pagamento_id", "Pagamento.id")
+      .leftJoin("pedido_produto", "Pedido.id", "pedido_produto.pedido_id")
+      .leftJoin("Produto", "pedido_produto.produto_id", "Produto.id")
+      .where("cliente_id", clienteId)
+
+      
+    // Agrupa os produtos por pedido
+    const pedidosMap = {};
+
+    for (const p of pedidosRaw) {
+      if (!pedidosMap[p.id]) {
+        pedidosMap[p.id] = {
+          id: p.id,
+          pedido_external_id: p.pedido_external_id,
+          pagamento_external_id: p.pagamento_external_id,
+          data: p.data,
+          total: p.total,
+          metodo: p.metodo,
+          entrega: p.entrega,
+          cliente_nome: p.cliente_nome,
+          cliente_contato: p.cliente_contato,
+          cliente_email: p.cliente_email,
+          cliente_cpf: p.cliente_cpf,
+          status: p.status,
+          codigoPix:p.codigoPix,
+          qrCode:p.qrCode,
+          idPix:p.idPix,
+          produtos: []
+        };
+      }
+      pedidosMap[p.id].produtos.push(p.produto_nome);
+    }
+
+    const pedidos = Object.values(pedidosMap);
+    
+
+    return { validated: true, values: pedidos };
+  } catch (error) {
+    console.error(error);
+    return { validated: false, error };
+  }
 }
 
   

@@ -4,9 +4,16 @@ const router = express.Router();
 const pedidosServices = require("../services/Pedido");
 const gatewayServices = require("../services/AbacatePay");
 const pagamentoServices = require("../services/Pagamentos");
+const clientesServices = require("../services/Cliente");
 
-router.get("/", async (req, res) => {
-  const pedido = await pedidosServices.findAll();
+
+router.get("/:cliente", async (req, res) => {
+  const cliente = Number(req.params.cliente)
+
+
+  const pedido = (cliente === 0 || isNaN(cliente)) ? await pedidosServices.findAll() 
+  : await pedidosServices.findByClientId(cliente)
+
   let pedidos = pedido?.values || [];
 
   pedidos = await Promise.all(
@@ -49,7 +56,7 @@ router.get("/", async (req, res) => {
             null,
             null,
             null,
-            status,
+            statusBr,
             status === "PAID" ? "Pix" : null
           );
           return {
@@ -66,8 +73,11 @@ router.get("/", async (req, res) => {
     })
   );
 
+  const clientesResponse = await clientesServices.findAll()
+
   res.render("pedidos_lista", {
     pedidos: pedidos,
+    clientes: clientesResponse.values || []
   });
 });
 
@@ -102,7 +112,7 @@ router.post("/", async (req, res) => {
       response.qrCode,
       response.id
     );
-    console.log(responseUptade);
+   
     res.status(200).json(response);
   } catch (err) {
     console.log(err);
@@ -113,7 +123,7 @@ router.put("/:id", async (req, res) => {
   const id = req.params.id;
   await gatewayServices.simularPagamento(id);
 
-  res.redirect("/pedidos_lista");
+  res.redirect("/pedidos_lista/0");
 });
 
 module.exports = router;
