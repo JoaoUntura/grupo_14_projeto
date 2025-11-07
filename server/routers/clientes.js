@@ -6,7 +6,7 @@ const clienteServices = require('../services/Cliente.js')
 router.get('/', async(req,res) =>{
     const response = await clienteServices.findAll()
     const clientes = response?.values
-    console.log(clientes)
+    
     res.render('clientes', {clientes:clientes})
 })
 

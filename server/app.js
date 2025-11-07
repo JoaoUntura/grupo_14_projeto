@@ -24,6 +24,7 @@ const produtos = require('./routers/produtos')
 const pedidos = require('./routers/pedidos')
 const pedidos_lista = require('./routers/pedidos_lista')
 const carteira = require('./routers/carteira')
+const editarusuario =require('./routers/editar_perfil')
 
 app.use('/', loginRouter)
 
@@ -34,6 +35,7 @@ app.use('/home', homeRouter)
 app.use('/clientes', clientes)
 app.use('/produtos', produtos)
 app.use('/funcionarios', funcionarios)
+app.use('/editar_usuario', editarusuario)
 
 
 app.listen(4040, ()=> {

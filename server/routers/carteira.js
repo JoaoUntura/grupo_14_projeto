@@ -22,7 +22,7 @@ router.post("/", async (req, res) => {
    
     const response = await gatewayServices.novoSaque(amount)
  
-    console.log(response)
+   
   });
 
 

@@ -111,7 +111,7 @@ class AbacatePayServices {
 try {
   const response = await fetch(url, options);
   const data = await response.json();
-  console.log(data);
+
   return data
 } catch (error) {
   console.error(error);
@@ -130,7 +130,7 @@ const options = {
 try {
   const response = await fetch(url, options);
   const data = await response.json();
-  console.log(data);
+
 } catch (error) {
   console.error(error);
 }
