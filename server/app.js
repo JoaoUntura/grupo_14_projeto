@@ -25,6 +25,7 @@ const pedidos = require('./routers/pedidos')
 const pedidos_lista = require('./routers/pedidos_lista')
 const carteira = require('./routers/carteira')
 const editarusuario =require('./routers/editar_perfil')
+const recuperarSenha = require('./routers/recuperarSenha')
 
 app.use('/', loginRouter)
 
@@ -36,7 +37,7 @@ app.use('/clientes', clientes)
 app.use('/produtos', produtos)
 app.use('/funcionarios', funcionarios)
 app.use('/editar_usuario', editarusuario)
-
+app.use('/recuperarSenha', recuperarSenha)
 
 app.listen(4040, ()=> {
     console.log('Servidor inicializado em http://localhost:4040')
