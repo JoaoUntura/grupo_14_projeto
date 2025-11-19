@@ -11,21 +11,23 @@
 
     <script>
       const entregar = (id) => {
-        console.log(id)
+          fetch(`/pedidos_lista/entregar/${id}`, { method: 'PUT' }).then(() => {
+          window.location.reload()
+        });
       }
 
       const simularPagamento = (id) => {
         fetch(`/pedidos_lista/${id}`, { method: 'PUT' }).then(() => {
-          location.reload();
+          window.location.reload()
         });
-      };
+      }
     </script>
     <link rel="stylesheet" href="styles.css" />
   </head>
 
   <body>
     <div class="d-flex">
-      <%- include('partials/sidebar') %>
+      <%- include('partials/sidebar', { user: user }) %>
       <%- include('partials/logout') %>
 
       <!-- 📋 Tabela de Pedidos -->
@@ -68,12 +70,15 @@
               </td>
               <td><%= pedido.id %></td>
              <td>
-                <% if (!pedido.entrega) { %>
-                  <button onclick="entregar(pedido.idPix)" class="btn btn-success btn-sm">Marcar como entregue</button>
-                <% } else { %>
-                 Entregue
-                                   <% } %>
+              <% if (!pedido.entrega) { %>
+                <button onclick="entregar(<%= pedido.id %>)" class="btn btn-success btn-sm">
+                  Marcar como entregue
+                </button>
+              <% } else { %>
+                Entregue
+              <% } %>
             </td>
+
 
               <td><%= pedido.cliente_nome %></td>
               <td><%= pedido.cliente_contato %></td>
@@ -207,7 +212,7 @@
               const modal = new bootstrap.Modal(document.getElementById('pixModal'));
               modal.show();
             } else {
-              alert("Erro: dados do PIX não retornados pelo servidor.");
+              window.location.reload()
             }
           } catch (err) {
             console.error("Erro ao gerar link:", err);

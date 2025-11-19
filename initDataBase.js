@@ -77,8 +77,12 @@ async function createDatabaseAndTables() {
         password_hashed VARCHAR(255) NOT NULL,
         role_id INT,
         nome VARCHAR(100),
+        codigo_recuperacao VARCHAR(6),
+        codigo_expira DATETIME,
         FOREIGN KEY (role_id) REFERENCES Role(id)
       );
+
+    
 
       CREATE TABLE IF NOT EXISTS Auditoria (
         id INT AUTO_INCREMENT PRIMARY KEY,
@@ -92,6 +96,7 @@ async function createDatabaseAndTables() {
       );
 
       INSERT IGNORE INTO Role (nome) VALUES ('admin');
+      INSERT IGNORE INTO Role (nome) VALUES ('funcionario');
       INSERT IGNORE INTO Produto (nome, preco) VALUES ('milho',5.00),('tomate',3.50);
     `);
 

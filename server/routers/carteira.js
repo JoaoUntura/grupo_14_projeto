@@ -13,7 +13,8 @@ const saques = await gatewayServices.listarSaques()
 
   res.render("carteira", {
     lojaInfo: lojaInfo,
-    saques:saques
+    saques:saques,
+    user: req.session.usuario
   });
 });
 

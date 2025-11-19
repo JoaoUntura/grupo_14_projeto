@@ -7,7 +7,7 @@ router.get('/', async(req,res) =>{
     const response = await clienteServices.findAll()
     const clientes = response?.values
     
-    res.render('clientes', {clientes:clientes})
+    res.render('clientes', {clientes:clientes,user: req.session.usuario})
 })
 
 router.post('/', async(req,res) =>{

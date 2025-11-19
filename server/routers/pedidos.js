@@ -20,6 +20,7 @@ router.get("/", async (req, res) => {
   res.render("pedidos", {
     produtos: produtos,
     clientes: clientes,
+    user: req.session.usuario
 
   });
 });

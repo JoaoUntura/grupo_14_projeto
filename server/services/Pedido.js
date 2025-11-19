@@ -102,9 +102,9 @@ class Pedido {
   }
 
   async update(id, data, cliente_id, total, forma_pagamento, entrega) {
-    let pedido = await this.findById(id);
+    
 
-    if (pedido.validated && pedido.values != undefined) {
+  
       let editPedido = {};
       data ? (editPedido.data = data) : null;
       cliente_id ? (editPedido.cliente_id = cliente_id) : null;
@@ -118,9 +118,7 @@ class Pedido {
       } catch (error) {
         return { validated: false, error: error };
       }
-    } else {
-      return { validated: false, error: "Pedido não existente" };
-    }
+    
   }
 
   async delete(id){

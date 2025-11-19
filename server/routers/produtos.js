@@ -7,12 +7,13 @@ router.get('/', async(req,res) =>{
     const response = await produtosServices.findAll()
     const produtos = response?.values
   
-    res.render('produtos', {produtos:produtos})
+    res.render('produtos', {produtos:produtos, user: req.session.usuario})
 })
 
 router.post('/', async(req,res) =>{
     const {nomeProduto, valorProduto} = req.body
-    const response = await produtosServices.create(nomeProduto, valorProduto)
+    await produtosServices.create(nomeProduto, valorProduto)
+    res.redirect("/produtos")
 
 })
 

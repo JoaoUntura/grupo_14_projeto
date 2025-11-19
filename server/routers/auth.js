@@ -28,6 +28,14 @@ router.post('/login',async(req, res)=>{
     }
    
 })
+router.get('/logout',async(req, res)=>{
+
+   
+        req.session.usuario = null
+        res.render('login')
+   
+   
+})
 
 
 module.exports = router

@@ -77,7 +77,8 @@ router.get("/:cliente", async (req, res) => {
 
   res.render("pedidos_lista", {
     pedidos: pedidos,
-    clientes: clientesResponse.values || []
+    clientes: clientesResponse.values || [],
+    user: req.session.usuario
   });
 });
 
@@ -106,14 +107,14 @@ router.post("/", async (req, res) => {
     if (!response.codigo || !response.qrCode || !response.id)
       throw new Error("Invalid");
 
-    const responseUptade = await pagamentoServices.update(
+     await pagamentoServices.update(
       pagamentoExternalId,
       response.codigo,
       response.qrCode,
       response.id
     );
    
-    res.status(200).json(response);
+    res.status(200).json(response)
   } catch (err) {
     console.log(err);
   }
@@ -123,7 +124,14 @@ router.put("/:id", async (req, res) => {
   const id = req.params.id;
   await gatewayServices.simularPagamento(id);
 
-  res.redirect("/pedidos_lista/0");
+  res.status(200).send()
+});
+
+router.put("/entregar/:id", async (req, res) => {
+  const id = req.params.id;
+  const update = await pedidosServices.update(parseInt(id), null, null,null,null,true)
+  console.log(update)
+  res.status(201).send()
 });
 
 module.exports = router;
