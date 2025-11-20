@@ -15,79 +15,70 @@
 
   <body>
     <div class="d-flex">
-      <!-- Sidebar -->
       <%- include('partials/sidebar', { user: user }) %>
-      <!-- Conteúdo principal -->
-      <div class="container-fluid p-4">
-        <div class="d-flex justify-content-between align-items-center mb-3">
-          <h3 class="brand">Sabor do Campo - Carteira</h3>
-        </div>
+      
+      <div class="pagina-conteudo">
+        <%- include('partials/logout') %>
 
-        <!-- Informações da Loja -->
-        <div class="card shadow p-4 mb-4">
-          <h4>Informações da Loja</h4>
-          <p><strong>Nome:</strong> <%= lojaInfo.name %></p>
-       
-          <div class="row">
-            <div class="col-md-4"><strong>Disponível:</strong> R$ <%= (lojaInfo.balance.available / 100).toFixed(2) %></div>
-            <div class="col-md-4"><strong>Pendente:</strong> R$ <%= (lojaInfo.balance.pending / 100).toFixed(2) %></div>
-            <div class="col-md-4"><strong>Bloqueado:</strong> R$ <%= (lojaInfo.balance.blocked / 100).toFixed(2) %></div>
-          </div>
-        </div>
-
-        <!-- Lista de Saques -->
-        <div class="card shadow p-4 mb-4">
-          <h4 class="mb-3">Saques</h4>
-
-          <% if (saques && saques.length > 0) { %>
-            <table class="table table-bordered">
-              <thead class="table-light">
-                <tr>
-                  <th>ID</th>
-                  <th>Valor (R$)</th>
-                  <th>Status</th>
-                  <th>Recibo</th>
-                  <th>Criado em</th>
-                </tr>
-              </thead>
-              <tbody>
-                <% saques.forEach(saque => { %>
-                  <tr>
-                    <td><%= saque.id %></td>
-                    <td>R$ <%= (saque.amount / 100).toFixed(2) %></td>
-                    <td><%= saque.status %></td>
-                    <td>
-                      <% if (saque.receiptUrl) { %>
-                        <a href="<%= saque.receiptUrl %>" target="_blank">Visualizar</a>
-                      <% } else { %>
-                        N/A
-                      <% } %>
-                    </td>
-                    <td><%= new Date(saque.createdAt).toLocaleDateString('pt-BR') %></td>
-                  </tr>
-                <% }) %>
-              </tbody>
-            </table>
-          <% } else { %>
-            <p>Nenhum saque registrado.</p>
-          <% } %>
-        </div>
-
-        <!-- Novo Saque -->
-        <div class="card shadow p-4 mb-4">
-          <h4>Criar Novo Saque</h4>
-          <form id="form-saque">
-            <div class="mb-3">
-              <label for="valorSaque" class="form-label">Valor (R$)</label>
-              <input type="number" class="form-control" id="valorSaque" min="1" step="0.01" required />
+        <div class="main-card-wrapper">
+          
+          <h2 class="page-title">Carteira</h2>
+          
+          <div class="content-card">
+            
+            <div class="inner-card">
+              <h5 class="card-title-header">Informações da Loja</h5>
+              <p><strong>Nome:</strong> <%= lojaInfo.name %></p>
+            
+              <div class="info-row">
+                <div class="info-item"><span class="label">Disponível:</span> R$ <%= (lojaInfo.balance.available / 100).toFixed(2) %></div>
+                <div class="info-item"><span class="label">Pendente:</span> R$ <%= (lojaInfo.balance.pending / 100).toFixed(2) %></div>
+                <div class="info-item"><span class="label">Bloqueado:</span> R$ <%= (lojaInfo.balance.blocked / 100).toFixed(2) %></div>
+              </div>
             </div>
-            <button type="submit" class="btn btn-primary">Solicitar Saque</button>
-          </form>
-        </div>
-      </div>
-    </div>
 
-    <script>
+            <div class="inner-card">
+              <h5 class="card-title-header">Saques</h5>
+              <table class="table table-striped custom-table">
+                <thead>
+                  <tr>
+                    <th>Valor</th>
+                    <th>Data</th>
+                    <th>Status</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <% if (lojaInfo.withdrawals && lojaInfo.withdrawals.length > 0) { %>
+                    <% lojaInfo.withdrawals.forEach(withdrawal => { %>
+                      <tr>
+                        <td>R$ <%= (withdrawal.amount / 100).toFixed(2) %></td>
+                        <td><%= new Date(withdrawal.created_at).toLocaleDateString('pt-BR') %></td>
+                        <td><%= withdrawal.status %></td>
+                      </tr>
+                    <% }); %>
+                  <% } else { %>
+                    <tr>
+                      <td colspan="3">Nenhum saque registrado.</td>
+                    </tr>
+                  <% } %>
+                </tbody>
+              </table>
+            </div>
+            
+            <div class="inner-card">
+              <h5 class="card-title-header">Criar Novo Saque</h5>
+              <form id="form-saque">
+                <div class="mb-3">
+                  <label for="valorSaque" class="form-label custom-label">Valor (R$)</label>
+                  <input type="number" class="custom-input" id="valorSaque" min="1" step="0.01" required />
+                </div>
+                <button type="submit" class="custom-button">Solicitar Saque</button>
+              </form>
+            </div>
+          </div>
+
+        </div> </div> </div> <script>
+      // ... (Mantenha o script existente aqui) ...
       const formSaque = document.getElementById('form-saque');
       formSaque.addEventListener('submit', async (e) => {
         e.preventDefault();
@@ -113,9 +104,8 @@
           } else {
             alert("Erro ao solicitar saque: " + (data?.message || ''));
           }
-        } catch (err) {
-          console.error(err);
-          alert("Falha ao solicitar saque.");
+        } catch (error) {
+          alert('Erro na comunicação com o servidor.');
         }
       });
     </script>

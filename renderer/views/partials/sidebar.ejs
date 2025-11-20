@@ -1,19 +1,20 @@
-<div class="sidebar p-3 text-white">
-    <h5>Menu:</h5>
-    <ul class="nav flex-column">
-      <li class="nav-item"><a href="/home" class="nav-link">Menu</a></li>
+<div class="sidebar-vertical">
+    
+    <img src="/logo.png" class="sidebar-logo" alt="Logo Sabor do Campo">
+
+    <ul class="sidebar-menu"> 
+      
+      <li class="sidebar-item-card"><a href="/home">Menu</a></li>
 
       <% if (user.role_id === 1) { %>
-        <li class="nav-item"><a href="/carteira" class="nav-link">Carteira</a></li>
-        <li class="nav-item"><a href="/produtos" class="nav-link">Produtos</a></li>
-        <li class="nav-item"><a href="/clientes" class="nav-link">Clientes</a></li>
-        <li class="nav-item"><a href="/funcionarios" class="nav-link">Funcionarios</a></li>
-        <li class="nav-item"><a href="/pedidos" class="nav-link">Pedidos</a></li>
+        <li class="sidebar-item-card"><a href="/carteira">Carteira</a></li>
+        <li class="sidebar-item-card"><a href="/produtos">Produtos</a></li>
+        <li class="sidebar-item-card"><a href="/clientes">Clientes</a></li>
+        <li class="sidebar-item-card"><a href="/funcionarios">Funcionarios</a></li>
+        <li class="sidebar-item-card"><a href="/pedidos">Pedidos</a></li>
       <% } %>
 
-      <!-- ESTE É O ÚNICO SEM RESTRIÇÃO -->
-      <li class="nav-item"><a href="/pedidos_lista/0" class="nav-link">Lista de Pedidos</a></li>
+      <li class="sidebar-item-card"><a href="/pedidos_lista/0">Lista de Pedidos</a></li>
     </ul>
-</div>
-
-
+    
+    </div>

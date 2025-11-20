@@ -9,21 +9,27 @@
 </head>
 
 <body>
-  <div class="login-container">
-    <h3 class="text-center mb-4">Acesso ao Sistema</h3>
-    <% if (typeof erro !=='undefined' ) { %>
-      <div class="error-message">
-        <%= erro %>
-      </div>
+  <div class="login-wrapper">
+
+    <img src="/logo.png" class="logo" alt="Logo">
+
+    <div class="login-card">
+
+      <h3 class="text-center mb-4">Acesso ao Sistema</h3>
+
+      <% if (typeof erro !== 'undefined') { %>
+        <div class="error-message"><%= erro %></div>
       <% } %>
-        <form method="POST" action="/login">
-          <input type="text" name="usuario" class="form-control" placeholder="Usuário" required />
-          <input type="password" name="senha" class="form-control" placeholder="Senha" required />
-          <button type="submit" class="btn btn-primary">Entrar</button>
-        </form>
-        <form method="get" action="./recuperarSenha">
-          <button type="submit" class="btn-link">Esqueci minha senha</button>
-        </form>
+
+      <form method="POST" action="/login">
+        <input type="text" name="usuario" placeholder="Usuário" required />
+        <input type="password" name="senha" placeholder="Senha" required />
+        <button type="submit">Entrar</button>
+      </form>
+
+      <a href="./recuperarSenha" class="forgot">Esqueci minha senha</a>
+
+    </div>
   </div>
 
   <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"

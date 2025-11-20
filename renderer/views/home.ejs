@@ -2,7 +2,6 @@
 <html lang="pt-br">
   <head>
     <meta charset="UTF-8" />
-    <title>Sabor do Campo</title>
     <link rel="stylesheet" href="../css/bootstrap.min.css">
     <link rel="stylesheet" href="../css/personalizado.css">
     
@@ -11,67 +10,68 @@
       rel="stylesheet"
     />
     <style>
-      /* Espaçamento e centralização */
       .grafico-container {
         background: #fff;
         border-radius: 10px;
         padding: 20px;
         box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-        margin-bottom: 30px;
+        margin-bottom: 5px;
       }
 
-      /* Ajuste de altura padrão */
       canvas {
         width: 100% !important;
-        height: 350px !important;
+        height: 280px !important;
+      }
+
+      .canvas-linha {
+          height: 340px !important;
       }
 
       @media (max-width: 768px) {
         canvas {
-          height: 300px !important;
+          height: 230px !important;
         }
       }
     </style>
   </head>
   <body>
-    <div class="d-flex">
-      <%- include('partials/sidebar', { user: user }) %>
+    
+    <%- include('partials/sidebar', { user: user }) %>
+
+    <div class="pagina-conteudo">
+
       <%- include('partials/logout') %>
 
-      <div class="container-fluid p-4">
-        <div class="d-flex justify-content-between align-items-center mb-3">
-          <h3 class="brand"><%= user.nome %></h3>
-        </div>
-
-        <div class="text-center mt-5">
-          <h4>Bem-vindo ao sistema de gerenciamento!</h4>
-          <p>Selecione uma opção no menu ao lado para começar.</p>
-        </div>
-
-        <!-- Seção dos gráficos -->
-        <div class="row mt-5">
-          <div class="col-md-6 grafico-container">
-            <h5 class="text-center mb-3">Vendas Mensais</h5>
-            <canvas id="graficoBarras"></canvas>
-          </div>
-
-          <div class="col-md-6 grafico-container">
-            <h5 class="text-center mb-3">Participação de Produtos</h5>
-            <canvas id="graficoPizza"></canvas>
+        <div class="text-center mt-4">
+          <div class="welcome-bubble">
+            <h4>Bem-vindo ao sistema de gerenciamento!</h4>
+            <p>Selecione uma opção no menu ao lado para começar.</p>
           </div>
         </div>
 
-        <div class="row mt-3">
-          <div class="col-12 grafico-container">
-            <h5 class="text-center mb-3">Crescimento de Clientes</h5>
-            <canvas id="graficoLinha"></canvas>
+        <div class="row mt-2 gx-4">
+          <div class="col-md-6"> <div class="grafico-container">
+              <h5 class="text-center mb-3">Vendas Mensais</h5>
+              <canvas id="graficoBarras"></canvas>
+            </div>
+          </div>
+
+          <div class="col-md-6"> <div class="grafico-container">
+              <h5 class="text-center mb-3">Participação de Produtos</h5>
+              <canvas id="graficoPizza"></canvas>
+            </div>
           </div>
         </div>
-      </div>
-    </div>
 
-    <!-- Scripts -->
-    <script src="renderer.js"></script>
+        <div class="row mt-4">
+          <div class="col-12">
+            <div class="grafico-container">
+              <h5 class="text-center mb-3">Crescimento de Clientes</h5>
+              <canvas id="graficoLinha" class="canvas-linha"></canvas>
+            </div>
+          </div>
+        </div>
+    </div> <script src="renderer.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
     <script>
@@ -139,7 +139,9 @@
         options: {
           responsive: true,
           maintainAspectRatio: false,
-          scales: { y: { beginAtZero: true } }
+          scales: { y: { 
+            beginAtZero: true } 
+          }
         }
       });
     </script>
