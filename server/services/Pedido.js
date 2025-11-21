@@ -97,6 +97,7 @@ class Pedido {
         .table("Pedido");
       return { validated: true, values:id };
     } catch (error) {
+      console.log(error)
       return { validated: false, error: error };
     }
   }

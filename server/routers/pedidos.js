@@ -35,7 +35,7 @@ router.post("/", async (req, res) => {
       entregue,
       ...quantidadesRaw
     } = req.body;
-
+    console.log(req.body)
     const totalPedido = parseFloat(total) * 100;
 
     const forma_pagamento = "Nao Informado";

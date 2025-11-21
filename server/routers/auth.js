@@ -3,7 +3,7 @@ const router = express.Router()
 
 const userServices = require('../services/User')
 const authServices = require('../services/Auth')
-const abacate = require('../services/AbacatePay')
+
 
 router.get('/', async(req,res) =>{
     const response = await userServices.findByEmail('admin')
@@ -17,6 +17,7 @@ router.get('/', async(req,res) =>{
 router.post('/login',async(req, res)=>{
 
     const {usuario, senha} = req.body
+
     const response = await userServices.findByEmail(usuario)
     const user = response.values
     const validation = authServices.comparePasswordService(senha, user?.password_hashed)
