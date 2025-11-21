@@ -2,6 +2,7 @@
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Recuperar Senha</title>
     <link rel="stylesheet" href="../css/bootstrap.min.css">
     <link rel="stylesheet" href="../css/personalizado.css">
@@ -12,7 +13,7 @@
 <div class="container d-flex justify-content-center align-items-center vh-100">
     <div class="card p-4 shadow" style="max-width: 420px; width: 100%;">
         
-        <h3 class="text-center mb-3">Recuperação de Senha</h3>
+        <h3 class="text-center mb-4 page-title">Recuperação de Senha</h3>
 
         <% if (erro) { %>
             <div class="alert alert-danger"><%= erro %></div>
@@ -28,12 +29,12 @@
             <form action="/recuperarSenha" method="POST">
 
                 <div class="mb-3">
-                    <label class="form-label">Digite seu e-mail</label>
-                    <input type="email" class="form-control" name="email"
+                    <label class="form-label custom-label">Digite seu e-mail</label>
+                    <input type="email" class="form-control custom-input" name="email"
                            placeholder="seuemail@gmail.com" required>
                 </div>
 
-                <button class="btn btn-primary w-100" type="submit">
+                <button class="custom-button w-100" type="submit">
                     Enviar código
                 </button>
             </form>
@@ -48,18 +49,18 @@
                 <input type="hidden" name="email" value="<%= email %>">
 
                 <div class="mb-3">
-                    <label class="form-label">Código recebido por e-mail</label>
-                    <input type="text" class="form-control" name="codigo"
+                    <label class="form-label custom-label">Código recebido por e-mail</label>
+                    <input type="text" class="form-control custom-input" name="codigo"
                            placeholder="6 dígitos" required>
                 </div>
 
                 <div class="mb-3">
-                    <label class="form-label">Nova senha</label>
-                    <input type="password" class="form-control" name="novaSenha"
+                    <label class="form-label custom-label">Nova senha</label>
+                    <input type="password" class="form-control custom-input" name="novaSenha"
                            placeholder="Digite a nova senha" required>
                 </div>
 
-                <button class="btn btn-success w-100" type="submit">
+                <button class="custom-button w-100" type="submit">
                     Alterar senha
                 </button>
 

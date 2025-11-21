@@ -317,7 +317,7 @@ body {
 .main-card-wrapper {
     margin-top: 50px; 
     box-shadow: 0 10px 35px rgba(0, 0, 0, 0.2);
-    padding: 30px; 
+    padding: 20px; 
     border-radius: var(--radius);
     background: var(--cream);
     max-width: 1400px;
@@ -326,25 +326,27 @@ body {
 }
 
 .page-title {
-    color: var(--ink);
+    color: var(--green-900);
     font-size: 36px;
     font-weight: 800;
-    margin-bottom: 30px;
+    margin-bottom: 25px;
     padding-left: 10px;
     text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1)
 }
 
 .content-card {
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
+    background: #fdfdfd; 
+    border-radius: var(--radius);
+    padding: 20px; 
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
 }
 
 .inner-card {
-    background: #fff;
-    padding: 25px;
+    background: #fff; 
     border-radius: var(--radius);
-    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+    padding: 15px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05); /* Sombra mais leve */
+    height: 100%;
 }
 
 .card-title-header {
@@ -484,4 +486,118 @@ body {
     background: transparent;
     padding: 0;
     margin-bottom: 0;
+}
+
+/* Correção para botões pequenos (usados na tabela) */
+.btn.btn-sm.custom-button,
+.btn.btn-sm.secondary-button {
+    padding: 6px 12px; /* Padding menor */
+    font-size: 13px; /* Fonte menor */
+    border-radius: 6px; /* Borda um pouco menor */
+    height: auto; /* Garante que a altura não seja fixada por outras regras */
+}
+
+/* Garante que a cor personalizada não seja sobrescrita por .btn-secondary do Bootstrap na tabela */
+.secondary-button {
+    /* Mantenha as definições originais */
+    background: var(--muted);
+    color: var(--ink);
+    border: 1px solid #ccc;
+    /* ... outras propriedades ... */
+}
+
+/* ... [todo o seu CSS existente aqui] ... */
+
+/* --- Responsividade --- */
+
+/* Layout e Componentes em Telas Médias (max-width: 992px) */
+@media (max-width: 992px) {
+  
+  /* 1. Oculta a barra lateral */
+  .sidebar-vertical {
+    display: none; 
+  }
+  
+  /* 2. Conteúdo principal ocupa 100% da largura, sem margem */
+  .pagina-conteudo {
+    margin-left: 0; 
+    width: 100%;
+    padding: 15px;
+    box-sizing: border-box; 
+    align-items: stretch; /* Alinha o conteúdo ao topo e permite que ele se estique */
+    min-height: auto; /* Remove a altura mínima forçada para melhor adaptação */
+  }
+
+  /* O body deve ter a altura mínima ajustada para o conteúdo */
+  body {
+    min-height: 100vh;
+    height: auto;
+    display: block; /* Remove o display: flex para que o body flua normalmente */
+    padding-top: 50px; /* Espaço para uma futura nav-bar responsiva, se for adicionada */
+    align-items: flex-start;
+  }
+
+  /* 3. Ajustes no Card Principal */
+  .main-card-wrapper {
+    margin-top: 30px;
+    margin-bottom: 30px; /* Adiciona margem na parte inferior */
+    padding: 15px;
+  }
+  
+  /* 4. Título da página */
+  .page-title {
+    font-size: 28px; 
+    margin-bottom: 20px;
+    padding-left: 0;
+    text-align: center;
+  }
+
+  /* 5. Ajuste de inputs e botões (ajustes gerais de tamanho) */
+  .custom-input, .custom-select, .custom-button, .login-card input, .login-card button {
+    padding: 10px;
+    font-size: 14px;
+  }
+  
+  /* 6. Login Card */
+  .login-card {
+    width: 300px; 
+    padding: 25px 30px;
+  }
+
+  .logo {
+    width: 200px; /* Diminui um pouco o logo na tela de login */
+    margin-bottom: 25px;
+  }
+
+  .logout-wrapper {
+    position: static; /* Move o botão de logout para o fluxo normal se não houver nav-bar superior */
+    text-align: right;
+    margin-bottom: 15px;
+  }
+}
+
+/* Telas de Celular Específicas (max-width: 600px) */
+@media (max-width: 600px) {
+  
+  /* Linha de Informações empilha */
+  .info-row {
+    flex-direction: column;
+    gap: 10px; 
+  }
+
+  /* Permite que o texto dentro dos itens de informação quebre */
+  .info-item {
+    white-space: normal;
+  }
+
+  /* Oculta os elementos da tela de login para economizar espaço */
+  .icon-lock {
+    font-size: 32px;
+    margin-bottom: 10px;
+  }
+
+  .login-card {
+    width: 90%; /* Ocupa a maior parte da tela */
+    max-width: 300px;
+  }
 }
