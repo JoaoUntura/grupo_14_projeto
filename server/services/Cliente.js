@@ -6,7 +6,7 @@ const db = require("../db")
 
     async findAll(){
         try {
-            const cliente = await db.select("id","nome", "contato").table("Cliente")
+            const cliente = await db.select("id","nome", "contato", "email", "cpf").table("Cliente")
             return {validated: true, values:cliente}
         } catch (error) {
             return {validated: false, error: error}
@@ -17,9 +17,9 @@ const db = require("../db")
     async findById(id){
         try{
 
-            const cliente = await db.select("id","nome", "contato").where("id", id).table("Cliente")
+            const cliente = await db.select("id","nome", "contato","email", "cpf").where("id", id).table("Cliente")
             return cliente.length > 0 
-            ?{validated:true, values:cliente}
+            ?{validated:true, values:cliente[0]}
             :{validated:true, values:undefined}
 
         }catch(error){
@@ -36,7 +36,7 @@ const db = require("../db")
         }
     }
 
-    async update(id, nome, contato){
+    async update(id, nome, contato, email, cpf){
 
         let cliente = await this.findById(id)
 
@@ -45,6 +45,8 @@ const db = require("../db")
             let editCliente = {}
             nome ? editCliente.nome = nome : null
             contato ? editCliente.contato = contato : null
+            email ? editCliente.email = email : null
+            cpf ? editCliente.cpf = cpf : null
 
             try{
                 await db.update(editCliente).where('id', id).table("Cliente")

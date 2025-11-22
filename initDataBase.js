@@ -19,6 +19,9 @@ async function createDatabaseAndTables() {
     console.log('🛠️ Criando tabelas...');
 
     await db.raw(`
+     
+   
+     
       CREATE TABLE IF NOT EXISTS Cliente (
         id INT AUTO_INCREMENT PRIMARY KEY,
         nome VARCHAR(100) NOT NULL,
@@ -39,7 +42,8 @@ async function createDatabaseAndTables() {
         idQrCodePayment TEXT,
         totalCentavos INT
       );
-
+      
+    
       CREATE TABLE IF NOT EXISTS Pedido (
         id INT AUTO_INCREMENT PRIMARY KEY,
         externalId CHAR(36) UNIQUE NOT NULL,
@@ -47,7 +51,7 @@ async function createDatabaseAndTables() {
         cliente_id INT NOT NULL,
         pagamento_id INT NOT NULL,
         entrega BOOLEAN,
-        FOREIGN KEY (cliente_id) REFERENCES Cliente(id),
+        FOREIGN KEY (cliente_id) REFERENCES Cliente(id) ON DELETE CASCADE,
         FOREIGN KEY (pagamento_id) REFERENCES Pagamento(id) ON DELETE CASCADE
       );
 
