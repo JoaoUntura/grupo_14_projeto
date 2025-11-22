@@ -18,7 +18,7 @@ const db = require("../db")
 
             const produto = await db.select("id","nome","preco").where("id", id).table('Produto')
             return produto.length > 0 
-            ?{validated:true, values:produto}
+            ?{validated:true, values:produto[0]}
             :{validated:true, values:undefined}
 
         }catch(error){
