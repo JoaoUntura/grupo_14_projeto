@@ -3,12 +3,10 @@ const router = express.Router();
 
 const recuperarSenha = require("../services/recuperarSenha");
 
-// Página inicial (etapa 1)
 router.get("/", (req, res) => {
     res.render("recuperarSenha", { etapa: 1, erro: null, msg: null, email: null });
 });
 
-// Enviar código
 router.post("/", async (req, res) => {
     const { email } = req.body;
 
@@ -36,7 +34,6 @@ router.post("/", async (req, res) => {
     });
 });
 
-// Validar código e alterar senha
 router.post("/novaSenha", async (req, res) => {
     const { email, codigo, novaSenha } = req.body;
 

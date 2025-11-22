@@ -4,21 +4,18 @@ const nodemailer = require("nodemailer");
 
 class RecuperarSenha {
 
-    // 1 — Buscar usuário pelo e-mail
     async verificarEmail(email) {
         return await db("User").where({ email }).first();
     }
 
-    // 2 — Gerar código (SÓ gera)
     gerarCodigo() {
-        return Math.floor(100000 + Math.random() * 900000).toString(); // 6 dígitos
+        return Math.floor(100000 + Math.random() * 900000).toString(); 
     }
 
-    // 3 — Salvar código + expiração no banco
     async salvarCodigo(email, codigo) {
 
         const expira = new Date();
-        expira.setMinutes(expira.getMinutes() + 10); // expira em 10 min
+        expira.setMinutes(expira.getMinutes() + 10);
 
         await db("User")
             .where({ email })
@@ -28,7 +25,6 @@ class RecuperarSenha {
             });
     }
 
-    // 4 — Enviar e-mail com o código
     async enviarCodigo(email, codigo) {
         const transporter = nodemailer.createTransport({
             service: "gmail",
@@ -46,7 +42,6 @@ class RecuperarSenha {
         });
     }
 
-    // 5 — Validar código + expiração
     async validarCodigo(email, codigoDigitado) {
         const usuario = await db("User")
             .where({ email })
@@ -58,13 +53,12 @@ class RecuperarSenha {
         const agora = new Date();
         const expira = new Date(usuario.codigo_expira);
 
-        if (agora > expira) return false; // expirado
-        if (usuario.codigo_recuperacao !== codigoDigitado) return false; // errado
+        if (agora > expira) return false;
+        if (usuario.codigo_recuperacao !== codigoDigitado) return false; 
 
         return true;
     }
 
-    // 6 — Atualizar senha e limpar código
     async atualizarSenha(email, novaSenha) {
         const hashed = await bcrypt.hash(novaSenha, 10);
 
