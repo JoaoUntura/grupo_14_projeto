@@ -39,38 +39,34 @@
                 </div>
 
                 <div class="mb-3">
-                  <label for="endereco" class="custom-label">Endereço:</label>
-                  <input type="text" class="custom-input" id="endereco" name="endereco" placeholder="Rua, Número, Bairro" required />
-                </div>
-                <div class="mb-3">
                   <label for="telefone" class="custom-label">Telefone:</label>
                   <input type="tel" class="custom-input" name="telefone" placeholder="(00) 00000-0000" required>
                 </div>
 
                 <div class="mb-3">
-                  <label for="cpf" class="custom-label">CPF:</label>
-                  <input type="text" class="custom-input" name="cpf" placeholder="123.456.789-10" required>
+                  <label for="endereco" class="custom-label">Endereço:</label>
+                  <input type="text" class="custom-input" id="endereco" name="endereco" placeholder="Rua, Número, Bairro" required />
+                </div>
+
+                <div class="mb-3">
+                  <label for="email" class="form-label">E-mail</label>
+                  <input type="email" class="form-control" name="email" required>
                 </div>
                 
                 <div class="mb-3">
-                  <label for="dataNascimento" class="custom-label">Data de Nascimento:</label>
-                  <input
-                    type="date"
-                    class="custom-input"
-                    id="dataNascimento"
-                    name="dataNascimento"
-                    required
-                  />
+                  <label for="dataNascimento" class="form-label">Data de Nascimento</label>
+                  <input type="date" class="form-control" name="dataNascimento" required>
                 </div>
+                
                 <div class="mb-3">
                   <label for="senha" class="custom-label">Senha:</label>
                   <input type="password" class="custom-input" name="senha" required>
                 </div>
 
                 <div class="d-flex gap-2">
-                  <button type="submit" class="custom-button">Salvar Funcionário</button>
+                  <button type="submit" class="custom-button">Cadastrar</button>
+                  <button type="button" id="btn-lista" class="btn btn-secondary flex-fill">Ver Lista</button>
                   </div>
-                
               </form>
             </div>
             
@@ -86,27 +82,35 @@
               </div>
 
               <div class="modal-body text-center p-4">
-                <div class="mb-3">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="65" height="65" fill="#28a745" class="bi bi-check-circle-fill" viewBox="0 0 16 16">
-                    <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM6.97 11.03 4.47 8.53a.75.75 0 0 1 1.06-1.06L7 8.94l3.47-3.47a.75.75 0 0 1 1.06 1.06L7 11.03a.75.75 0 0 1-1.06 0z"/>
-                  </svg>
-                </div>
 
-                <p class="mb-4">Seu login foi criado com sucesso!</p>
-
-                <div class="text-start">
-                  <p><strong>Usuário:</strong> <span id="pixLogin"></span></p>
-                  <p><strong>Senha:</strong> Senha inserida</p>
-                </div>
-
-                <div class="d-grid mt-4">
-                  <button type="button" class="btn btn-success" data-bs-dismiss="modal">Fechar</button>
-                </div>
-              </div>
-            </div>
-          </div>
+        <!-- Ícone -->
+        <div class="mb-3">
+          <svg xmlns="http://www.w3.org/2000/svg" width="65" height="65" fill="#28a745" class="bi bi-check-circle-fill" viewBox="0 0 16 16">
+            <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM6.97 11.03 4.47 8.53a.75.75 0 0 1 1.06-1.06L7 8.94l3.47-3.47a.75.75 0 0 1 1.06 1.06L7 11.03a.75.75 0 0 1-1.06 0z"/>
+          </svg>
         </div>
+
+        <!-- Texto -->
+        <p class="fs-5 text-muted mb-2">O usuário foi cadastrado com sucesso.</p>
+        <p class="fw-semibold mb-3">Agora ele já pode acessar o sistema!</p>
+
+        <!-- Botão -->
+        <button class="btn btn-success w-100 rounded-pill fw-semibold" data-bs-dismiss="modal">
+          Ok, entendi
+        </button>
+
       </div>
     </div>
+  </div>
+</div>
+
+     <script src="renderer.js"></script>
+    <script >
+       document.getElementById('form-funcionario').onsubmit = () => {
+            
+              const modal = new bootstrap.Modal(document.getElementById('pixModal'));
+            modal.show();
+            };
+    </script>
   </body>
 </html>
