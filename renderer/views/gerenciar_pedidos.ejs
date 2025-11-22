@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Gerenciar Pedidos</title>
+    <link rel="stylesheet" href="../css/bootstrap.min.css">
+    <link rel="stylesheet" href="../css/personalizado.css">
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <style>
+        /* Estilos adicionais para o modo de edição */
+        .editable-field {
+            border: 1px solid #ccc !important;
+            padding: 5px;
+            border-radius: 4px;
+            width: 100%;
+            background-color: #fff;
+        }
+        .total-field {
+            font-weight: bold;
+            color: var(--green-900);
+        }
+        /* Corrigindo a cor de ícones para se adequar ao fundo */
+        .btn-edit svg {
+            color: var(--green-900);
+        }
+        .btn-save {
+            min-width: 80px; /* Garante que o botão Salvar tenha um tamanho padrão */
+        }
+    </style>
+  </head>
+  <body>
+    
+    <div class="d-flex">
+      
+      <%- include('partials/sidebar', { user: user }) %>
+    
+      <div class="pagina-conteudo">
+
+        <%- include('partials/logout') %>
+
+        <div class="main-card-wrapper">
+          
+          <h2 class="page-title">Gerenciar Pedidos</h2>
+
+          <div class="content-card">
+            
+            <h4 class="card-title-header">Lista de Pedidos Atuais</h4>
+            <div class="table-responsive">
+                <table class="table table-striped custom-table align-middle">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Cliente</th>
+                            <th>Data</th>
+                            <th>Total (R$)</th>
+                            <th>Status</th>
+                            <th>Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% 
+                            const pedidos = [
+                                { id: 1, cliente: "João Silva", data: "20/11/2025", total: "45.00", status: "Não Entregue" },
+                                { id: 2, cliente: "Maria Souza", data: "18/11/2025", total: "150.75", status: "Entregue" },
+                                { id: 3, cliente: "Carlos Gomes", data: "21/11/2025", total: "32.50", status: "Não Entregue" }
+                            ];
+                        %>
+                        <% pedidos.forEach(pedido => { %>
+                        <tr data-pedido-id="<%= pedido.id %>">
+                            <td><%= pedido.id %></td>
+                            <td class="editable-cell" data-field="cliente"><%= pedido.cliente %></td>
+                            <td class="editable-cell" data-field="data"><%= pedido.data %></td>
+                            <td class="editable-cell total-field" data-field="total"><%= pedido.total %></td>
+                            <td class="editable-cell" data-field="status"><%= pedido.status %></td>
+                            <td>
+                                <button class="btn btn-sm custom-button secondary-button btn-edit" title="Editar Pedido">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil-square" viewBox="0 0 16 16">
+                                        <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.29 1.29z"/>
+                                        <path d="M13.52 4.257l-4.52 4.52a.5.5 0 0 0-.135.247l-.678 2.716a.5.5 0 0 0 .614.614l2.716-.678a.5.5 0 0 0 .247-.135l4.52-4.52a.5.5 0 0 0 0-.707l-2-2a.5.5 0 0 0-.707 0zM12.44 5.31l1.115 1.115-3.32 3.32L9.12 8.63l3.32-3.32z"/>
+                                        <path d="M10.75 0a.75.75 0 0 0-.75.75V3h-9a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V4a1 1 0 0 0-1-1h-1.75V.75A.75.75 0 0 0 12.5 0h-1.75zM12 4h2v10H1V4h2v1H2a.5.5 0 0 0-.5.5v1.5H3V5.5a.5.5 0 0 0-.5-.5H11V3h-1v1h2z"/>
+                                    </svg>
+                                </button>
+                                <button class="btn btn-sm custom-button btn-save" style="display:none;">Salvar</button>
+                                <button class="btn btn-sm custom-button btn-danger" title="Excluir Pedido">Excluir</button>
+                            </td>
+                        </tr>
+                        <% }) %>
+                        </tbody>
+                </table>
+            </div>
+
+          </div>
+ 
+          </div>
+        </div>
+      </div>
+    
+    <script>
+        document.querySelectorAll('.btn-edit').forEach(button => {
+            button.addEventListener('click', (e) => {
+                // Encontra a linha (tr) do pedido
+                const row = e.target.closest('tr');
+                const saveButton = row.querySelector('.btn-save');
+                const editButton = row.querySelector('.btn-edit');
+                
+                // 1. Alterna a visibilidade dos botões
+                editButton.style.display = 'none';
+                saveButton.style.display = 'inline-block';
+
+                // 2. Torna as células editáveis
+                row.querySelectorAll('.editable-cell').forEach(cell => {
+                    const originalValue = cell.textContent.trim();
+                    const field = cell.dataset.field;
+                    let inputElement;
+
+                    if (field === 'status') {
+                        // Campo Status usa <select>
+                        inputElement = document.createElement('select');
+                        inputElement.className = 'editable-field form-select custom-select';
+                        inputElement.innerHTML = `
+                            <option value="Não Entregue" ${originalValue === 'Não Entregue' ? 'selected' : ''}>Não Entregue</option>
+                            <option value="Entregue" ${originalValue === 'Entregue' ? 'selected' : ''}>Entregue</option>
+                        `;
+                    } else if (field === 'data') {
+                        // Campo Data usa <input type="date">
+                        inputElement = document.createElement('input');
+                        inputElement.type = 'date';
+                        inputElement.className = 'editable-field form-control custom-input';
+                        
+                        // Converte o formato DD/MM/AAAA para AAAA-MM-DD
+                        const parts = originalValue.split('/');
+                        if (parts.length === 3) {
+                            inputElement.value = `${parts[2]}-${parts[1]}-${parts[0]}`;
+                        }
+                    } else if (field === 'total') {
+                        // Campo Total (Apenas para visualização/leitura no front)
+                        inputElement = document.createElement('input');
+                        inputElement.type = 'text'; 
+                        inputElement.className = 'editable-field form-control custom-input total-field';
+                        inputElement.value = originalValue;
+                        inputElement.setAttribute('readonly', 'readonly'); 
+                    }
+                     else {
+                        // Demais campos usam <input type="text">
+                        inputElement = document.createElement('input');
+                        inputElement.type = 'text';
+                        inputElement.className = 'editable-field form-control custom-input';
+                        inputElement.value = originalValue;
+                    }
+
+                    // Substitui o texto pelo input
+                    cell.innerHTML = '';
+                    cell.appendChild(inputElement);
+                });
+            });
+        });
+
+        document.querySelectorAll('.btn-save').forEach(button => {
+            button.addEventListener('click', (e) => {
+                const row = e.target.closest('tr');
+                const pedidoId = row.dataset.pedidoId;
+                const saveButton = row.querySelector('.btn-save');
+                const editButton = row.querySelector('.btn-edit');
+                
+                const updatedData = {
+                    id: pedidoId
+                };
+
+                // 1. Coleta os novos valores
+                row.querySelectorAll('.editable-cell').forEach(cell => {
+                    const field = cell.dataset.field;
+                    const inputElement = cell.querySelector('.editable-field');
+                    
+                    if (inputElement) {
+                        updatedData[field] = inputElement.value;
+
+                        // Restaura o texto original da célula
+                        let displayValue = inputElement.value;
+                        if (field === 'data') {
+                             // Converte de volta para DD/MM/AAAA para exibição
+                             const parts = displayValue.split('-');
+                            if (parts.length === 3) {
+                                displayValue = `${parts[2]}/${parts[1]}/${parts[0]}`;
+                            }
+                        }
+                        
+                        cell.textContent = displayValue;
+                        
+                    }
+                });
+
+                // 2. Alterna a visibilidade dos botões de volta
+                saveButton.style.display = 'none';
+                editButton.style.display = 'inline-block';
+
+                // AQUI: Seu amigo deve fazer a chamada AJAX/Fetch (por exemplo, PUT /api/pedidos/1)
+                console.log(`Dados para o Back-end (Pedido ${pedidoId}):`, updatedData);
+                alert(`Simulação de Salvamento do Pedido ${pedidoId} com sucesso!`);
+            });
+        });
+
+        // Simulação da função de excluir
+        document.querySelectorAll('.btn-danger').forEach(button => {
+            button.addEventListener('click', (e) => {
+                const row = e.target.closest('tr');
+                const pedidoId = row.dataset.pedidoId;
+                if (confirm(`Tem certeza que deseja excluir o Pedido ${pedidoId}?`)) {
+                    // AQUI: Seu amigo deve fazer a chamada DELETE (por exemplo, DELETE /api/pedidos/1)
+                    console.log(`Excluir Pedido ${pedidoId}`);
+                    row.remove(); // Remove a linha da tabela após a simulação
+                }
+            });
+        });
+    </script>
+
+    <script src="../js/bootstrap.bundle.min.js"></script>
+    <script src="renderer.js"></script>
+  </body>
+</html>
