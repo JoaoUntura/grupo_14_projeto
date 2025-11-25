@@ -20,6 +20,9 @@ router.post('/login',async(req, res)=>{
 
     const response = await userServices.findByEmail(usuario)
     const user = response.values
+    if (!user){
+        return res.render('login',{erro: 'Usuário ou Senha inválidos'})
+    }
     const validation = authServices.comparePasswordService(senha, user?.password_hashed)
     if (validation){
         req.session.usuario = user

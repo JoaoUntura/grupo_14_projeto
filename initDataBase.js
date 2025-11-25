@@ -8,7 +8,7 @@ const db = knex({
     host: '127.0.0.1',
     port: 3306,
     user: 'root',
-    password: 'unifeob@123',
+    password: 'E1r2i3k4a5.',
     database: 'sabor',
     multipleStatements: true
   },
@@ -86,7 +86,6 @@ async function createDatabaseAndTables() {
         FOREIGN KEY (role_id) REFERENCES Role(id)
       );
 
-    
 
       CREATE TABLE IF NOT EXISTS Auditoria (
         id INT AUTO_INCREMENT PRIMARY KEY,
