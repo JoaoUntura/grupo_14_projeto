@@ -29,8 +29,8 @@ class RecuperarSenha {
         const transporter = nodemailer.createTransport({
             service: "gmail",
             auth: {
-                user: "SEU_EMAIL@gmail.com",
-                pass: "SUA_SENHA_DE_APP"
+                user: "joaountura@gmail.com",
+                pass: "yivu rqbd cjtd juyj"
             }
         });
 
