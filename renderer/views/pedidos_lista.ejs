@@ -29,13 +29,13 @@
     <link rel="stylesheet" href="styles.css" />
   </head>
 
-  <body>
-    <div class="d-flex">
+  <body style="padding-left: 240px;">
+    <div >
       <%- include('partials/sidebar', { user: user }) %>
       <%- include('partials/logout') %>
 
       <!-- 📋 Tabela de Pedidos -->
-      <div class="card shadow p-4 mb-4 w-100">
+      <div class="card shadow p-4 mb-4" >
         <h2 class="mb-3">Lista de Pedidos</h2>
 
         <!-- 🔍 Filtro de cliente -->
@@ -47,7 +47,8 @@
         </select>
 
         <% if (pedidos && pedidos.length > 0) { %>
-        <table class="table table-bordered">
+          <div class="table-responsive" style="  overflow-x: auto; max-height: 75vh; overflow-y: auto; ">
+          <table class="table table-bordered align-middle">
           <thead class="table-light">
             <tr>
               <th></th>
@@ -117,6 +118,7 @@
             </tr>
             <% }) %>
           </tbody>
+        </div>
         </table>
         <% } else { %>
           <p>Nenhum pedido encontrado.</p>
